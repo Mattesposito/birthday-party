@@ -932,6 +932,7 @@ async function setupRegistrationForm() {
       guestsCount,
       savedMode
     });
+    const sadUrl = new URL("sad.html", window.location.href).toString();
 
     setFormBusy(false);
     const savedGroup = groupName ? ` in ${groupName}` : "";
@@ -955,7 +956,12 @@ async function setupRegistrationForm() {
     }, function(error) {
       console.log('Errore...', error);
     });
-    window.location.assign(thankYouUrl);
+    if (willBeThere) {
+      window.location.assign(thankYouUrl);
+    }
+    else {
+      window.location.assign(sadUrl);
+    }
   });
 }
 
