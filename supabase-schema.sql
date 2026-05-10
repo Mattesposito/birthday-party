@@ -121,7 +121,7 @@ create trigger trigger_update_lista_invitati
   after insert or update on public.event_registrations
   for each row execute function update_lista_invitati_on_registration();
 
-drop function if exists public.register_guest(text, text, integer, text, text, text, boolean);
+drop function if exists public.register_guest(text,text,text,integer,text,text,text,boolean);
 create or replace function public.register_guest(
   p_name text,
   p_surname text,
@@ -460,3 +460,10 @@ grant execute on function public.save_music_profile(
   to anon, authenticated;
 grant execute on function public.list_music_profiles()
   to anon, authenticated;
+
+alter policy "groups_visual"
+on "public"."guest_groups"
+to anon
+using (
+  true
+);
