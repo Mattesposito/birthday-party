@@ -49,12 +49,12 @@ a {
 .highlight-link {
   color: var(--accent);
   font-weight: 700;
-  text-decoration: underline;
+  /* text-decoration: underline; */
   text-decoration-thickness: 2px;
   text-decoration-color: rgba(214, 34, 25, 0.8);
-  background: rgba(255, 229, 153, 0.55);
+  /* background: rgba(255, 229, 153, 0.55); */
   border-radius: 4px;
-  padding: 0 0.15rem;
+  /* padding: 0 0.15rem; */
 }
 
 button,
@@ -1473,6 +1473,11 @@ img {
 .lego-theme .button.brick-6,
 .music-toggle.brick-6 {
   --brick-stud-count: 6;
+}
+
+.lego-theme .button.brick-8,
+.music-toggle.brick-8 {
+  --brick-stud-count: 8;
 }
 
 .lego-theme .hero-actions,
