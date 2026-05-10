@@ -1286,10 +1286,8 @@ img {
   --border: rgba(17, 17, 17, 0.14);
   --shadow: 0 22px 42px rgba(0, 0, 0, 0.1);
   font-family: "Nunito", "Roboto", sans-serif;
-  background:
-    radial-gradient(circle at 22px 22px, rgba(0, 0, 0, 0.05) 0, rgba(0, 0, 0, 0.05) 6px, transparent 7px),
-    linear-gradient(180deg, #f4f0e7 0%, #fbfaf7 38%, #ffffff 100%);
-  background-size: 120px 120px, auto;
+  background: linear-gradient(180deg, #f4f0e7 0%, #fbfaf7 38%, #ffffff 100%);
+  background-size: auto;
 }
 
 .lego-theme .brand-accent {
@@ -1489,14 +1487,10 @@ img {
 .lego-theme .hero,
 .lego-theme .subpage-hero {
   background:
-    radial-gradient(circle at 16% 18%, rgba(255, 221, 34, 0.18), transparent 24%),
-    radial-gradient(circle at 82% 12%, rgba(35, 116, 198, 0.18), transparent 26%),
     linear-gradient(180deg, rgba(255, 255, 255, 0.08), transparent 20%),
     var(--hero-bg-image),
     linear-gradient(135deg, #18233d 0%, #101010 44%, #0b1324 100%);
   background-position:
-    center center,
-    center center,
     center center,
     var(--hero-bg-position),
     center center;
@@ -1506,11 +1500,8 @@ img {
 
 .lego-theme .hero::before,
 .lego-theme .subpage-hero::before {
-  background-image:
-    radial-gradient(circle at 24px 24px, rgba(255, 255, 255, 0.05) 0, rgba(255, 255, 255, 0.05) 6px, transparent 7px),
-    radial-gradient(circle at 84px 84px, rgba(255, 255, 255, 0.05) 0, rgba(255, 255, 255, 0.05) 6px, transparent 7px);
-  background-size: 120px 120px;
-  opacity: 0.34;
+  background-image: none;
+  opacity: 0;
 }
 
 .lego-theme .hero::after,
@@ -1832,8 +1823,6 @@ img {
 
 .lego-theme .rsvp-section {
   background:
-    radial-gradient(circle at 16% 18%, rgba(255, 221, 34, 0.16), transparent 24%),
-    radial-gradient(circle at 82% 12%, rgba(35, 116, 198, 0.16), transparent 26%),
     linear-gradient(180deg, rgba(255, 255, 255, 0.08), transparent 20%),
     linear-gradient(135deg, #18233d 0%, #101010 44%, #0b1324 100%);
 }
@@ -1850,12 +1839,9 @@ img {
   content: "";
   position: absolute;
   inset: 0;
-  background-image:
-    radial-gradient(circle at 24px 24px, rgba(255, 255, 255, 0.05) 0, rgba(255, 255, 255, 0.05) 6px, transparent 7px),
-    radial-gradient(circle at 84px 84px, rgba(255, 255, 255, 0.05) 0, rgba(255, 255, 255, 0.05) 6px, transparent 7px);
-  background-size: 120px 120px;
+  background-image: none;
   pointer-events: none;
-  opacity: 0.28;
+  opacity: 0;
 }
 
 .lego-theme .venue-meta article,
@@ -2072,11 +2058,8 @@ img {
   content: "";
   position: absolute;
   inset: 0;
-  background-image:
-    radial-gradient(circle at 24px 24px, rgba(255, 255, 255, 0.05) 0, rgba(255, 255, 255, 0.05) 6px, transparent 7px),
-    radial-gradient(circle at 84px 84px, rgba(255, 255, 255, 0.05) 0, rgba(255, 255, 255, 0.05) 6px, transparent 7px);
-  background-size: 120px 120px;
-  opacity: 0.35;
+  background-image: none;
+  opacity: 0;
 }
 
 .music-stage-shell,
@@ -2188,12 +2171,9 @@ img {
   content: "";
   position: absolute;
   inset: 0;
-  background-image:
-    radial-gradient(circle at 24px 24px, rgba(0, 0, 0, 0.18) 0, rgba(0, 0, 0, 0.18) 7px, transparent 8px),
-    radial-gradient(circle at 84px 84px, rgba(255, 255, 255, 0.1) 0, rgba(255, 255, 255, 0.1) 7px, transparent 8px);
-  background-size: 120px 120px;
+  background-image: none;
   pointer-events: none;
-  opacity: 0.42;
+  opacity: 0;
 }
 
 .music-grid::after {
