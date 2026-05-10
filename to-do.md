@@ -1,13 +1,13 @@
 - registration
 - aggiungere nei gruppi il numero di partecipanti e un contatore totale
 - no indirizzi
-- titolo: Matteos birthday party -> An almost ..
 - niente orario (incerto)
 - bottone We want you! / registrazione più grande nella home 
-- invited list con checkbox su chi si è iscritto
-- trigger sql per aggiornare invited_list con la checkbox dei registrati e il numero di invitati
 - trigger js per email di nuova registrazione a Matteo con i dati della registrazione
 
+- titolo: Matteos birthday party -> An almost ..
+- invited list con checkbox su chi si è iscritto
+- trigger sql per aggiornare invited_list con la checkbox dei registrati e il numero di invitati
 - trigger sql su invited_list per aggiungere nuovi iscritti non invitati
 - nella registration aggiungere un checkbox "Will you be there?" che finisce nel invited_list
 - Music / schedule -> work in progress
