@@ -125,7 +125,7 @@ drop function if exists public.register_guest(text, text, integer, text, text, t
 create or replace function public.register_guest(
   p_name text,
   p_surname text,
-  p_email text,
+  p_username text,
   p_guests_count integer default 1,
   p_notes text default null,
   p_group_slug text default 'default',
@@ -134,7 +134,7 @@ create or replace function public.register_guest(
 )
 returns table (
   registration_id uuid,
-  registration_email citext,
+  registration_username text,
   group_slug text,
   group_name text,
   saved_mode text
@@ -147,7 +147,7 @@ declare
   v_group_id uuid;
   v_group_slug text;
   v_group_name text;
-  v_email citext;
+  v_username text;
   v_full_name text;
   v_registration_id uuid;
   v_registration_exists boolean;
@@ -160,15 +160,15 @@ begin
     raise exception 'Surname is required';
   end if;
 
-  if nullif(trim(coalesce(p_email, '')), '') is null then
-    raise exception 'Email is required';
+  if nullif(trim(coalesce(p_username, '')), '') is null then
+    raise exception 'Username is required';
   end if;
 
   if coalesce(p_guests_count, 0) < 1 then
     raise exception 'Guests count must be at least 1';
   end if;
 
-  v_email := lower(trim(p_email))::citext;
+  v_username := lower(trim(p_username));
   v_full_name := trim(concat_ws(' ', trim(p_name), trim(p_surname)));
 
   if nullif(trim(coalesce(p_new_group_name, '')), '') is not null then
@@ -215,14 +215,14 @@ begin
   select exists (
     select 1
     from public.event_registrations as er
-    where er.email = v_email
+    where er.username = v_username
   ) into v_registration_exists;
 
   insert into public.event_registrations (
     name,
     surname,
     full_name,
-    email,
+    username,
     guests_count,
     notes,
     group_id,
@@ -232,13 +232,13 @@ begin
     trim(p_name),
     trim(p_surname),
     v_full_name,
-    v_email,
+    v_username,
     p_guests_count,
     nullif(trim(coalesce(p_notes, '')), ''),
     v_group_id,
     p_will_be_there
   )
-  on conflict (email) do update
+  on conflict (username) do update
   set
     name = excluded.name,
     surname = excluded.surname,
@@ -254,7 +254,7 @@ begin
   return query
   select
     v_registration_id,
-    v_email,
+    v_username,
     v_group_slug,
     v_group_name,
     case when v_registration_exists then 'updated' else 'created' end;
@@ -275,7 +275,7 @@ drop function if exists public.save_music_profile(
 create or replace function public.save_music_profile(
   p_name text,
   p_surname text,
-  p_email text,
+  p_username text,
   p_instruments text[] default '{}'::text[],
   p_styles text[] default '{}'::text[],
   p_genres text[] default '{}'::text[],
@@ -295,7 +295,7 @@ set search_path = public
 as $$
 declare
   v_default_group_id uuid;
-  v_email citext;
+  v_username citext;
   v_full_name text;
   v_registration_id uuid;
   v_profile_id uuid;
@@ -309,8 +309,8 @@ begin
     raise exception 'Surname is required';
   end if;
 
-  if nullif(trim(coalesce(p_email, '')), '') is null then
-    raise exception 'Email is required';
+  if nullif(trim(coalesce(p_username, '')), '') is null then
+    raise exception 'username is required';
   end if;
 
   if coalesce(cardinality(p_instruments), 0) = 0 then
@@ -334,14 +334,14 @@ begin
     raise exception 'Default guest group is missing. Seed the schema first.';
   end if;
 
-  v_email := lower(trim(p_email))::citext;
+  v_username := lower(trim(p_username))::citext;
   v_full_name := trim(concat_ws(' ', trim(p_name), trim(p_surname)));
 
   insert into public.event_registrations (
     name,
     surname,
     full_name,
-    email,
+    username,
     guests_count,
     notes,
     group_id
@@ -350,12 +350,12 @@ begin
     trim(p_name),
     trim(p_surname),
     v_full_name,
-    v_email,
+    v_username,
     1,
     null,
     v_default_group_id
   )
-  on conflict (email) do update
+  on conflict (username) do update
   set
     name = excluded.name,
     surname = excluded.surname,
