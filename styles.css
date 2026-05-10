@@ -2277,7 +2277,7 @@ img {
   left: 50%;
   bottom: 28px;
   z-index: 2;
-  inline-size: calc(var(--brick-stud-count) * var(--brick-stud-size) + 32px);
+  inline-size: calc(var(--brick-stud-count) * var(--brick-stud-size));
   overflow: visible;
   min-height: 72px;
   padding: 22px 16px 14px;
