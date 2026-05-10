@@ -20,6 +20,9 @@ smoke-rsvp-db:
 smoke-rsvp-write:
 	node scripts/smoke-supabase-rsvp.mjs --write
 
+test-select-restrictions:
+	python3 scripts/test_select_restrictions.py
+
 stop:
 	@if pkill -f "python3 -m http.server $(PORT)" 2>/dev/null; then \
 		echo "Server fermato sulla porta $(PORT)"; \

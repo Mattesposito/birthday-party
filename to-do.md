@@ -1,4 +1,7 @@
 - registration - Matti
+- inserire tutti gli invitati
+- aggiungere mail della madre di matte
+- aggiungere membersCount ai gruppi
 - niente orario (incerto)
 - bottone We want you! / registrazione più grande nella home 
 - trigger js per email di nuova registrazione a Matteo con i dati della registrazione - Andri

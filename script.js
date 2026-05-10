@@ -27,6 +27,7 @@ const form = document.getElementById("rsvp-form");
 const status = document.getElementById("form-status");
 const submitButton = form?.querySelector('button[type="submit"]') || null;
 const groupSelect = document.getElementById("group-slug");
+const groupList = document.getElementById("groups-list");
 const sharedHeaderMount = document.querySelector("[data-site-header]");
 const sharedFooterMount = document.querySelector("[data-site-footer]");
 const musicForm = document.getElementById("music-form");
@@ -421,7 +422,8 @@ function normalizeGroups(groups) {
     .filter((group) => group?.slug && group?.name)
     .map((group) => ({
       slug: String(group.slug).trim(),
-      name: String(group.name).trim()
+      name: String(group.name).trim(),
+      membersCount: Number(group.event_registrations?.length ?? 0)
     }))
     .filter((group) => group.slug && group.name);
 }
@@ -458,6 +460,32 @@ function renderGroupOptions(groups) {
   groupSelect.disabled = false;
 }
 
+function renderGroupList(groups) {
+  if (!groupList) {
+    return;
+  }
+
+  const availableGroups = normalizeGroups(groups);
+
+  if (!availableGroups.length) {
+    groupList.innerHTML = `<p class="rsvp-info-card-empty">No groups available.</p>`;
+    return;
+  }
+
+  groupList.innerHTML = availableGroups
+    .map((group) => {
+      const count = Number.isFinite(group.membersCount) ? group.membersCount : 0;
+      const label = `${count} have registered`;
+
+      return `
+        <div class="group-summary">
+          <strong>${escapeHTML(group.name)}</strong> (${escapeHTML(label)})
+        </div>
+      `;
+    })
+    .join("");
+}
+
 async function fetchGuestGroups(client) {
   if (!client) {
     throw new Error(
@@ -467,7 +495,7 @@ async function fetchGuestGroups(client) {
 
   const { data, error } = await client
     .from("guest_groups")
-    .select("name, slug")
+    .select("name, slug, sort_order, event_registrations(id)")
     .order("sort_order", { ascending: true })
     .order("name", { ascending: true });
 
@@ -475,6 +503,7 @@ async function fetchGuestGroups(client) {
     throw error;
   }
 
+  renderGroupList(data);
   return normalizeGroups(data);
 }
 

@@ -467,3 +467,26 @@ to anon
 using (
   true
 );
+
+-- Enable RLS on sensitive tables to prevent direct SELECT access
+alter table public.event_registrations enable row level security;
+alter table public.music_profiles enable row level security;
+alter table public.lista_invitati enable row level security;
+
+create policy "block_select_on_event_registrations"
+  on public.event_registrations
+  for select
+  to anon, authenticated
+  using (false);
+
+create policy "block_select_on_music_profiles"
+  on public.music_profiles
+  for select
+  to anon, authenticated
+  using (false);
+
+create policy "block_select_on_lista_invitati"
+  on public.lista_invitati
+  for select
+  to anon, authenticated
+  using (false);
