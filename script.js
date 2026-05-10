@@ -449,12 +449,12 @@ function renderGroupOptions(groups) {
   }
 
   groupSelect.innerHTML = [
-    '<option value="" selected>Choose a group</option>',
     ...availableGroups.map(
       (group) => `<option value="${group.slug}">${group.name}</option>`
     )
   ].join("");
-  groupSelect.value = "";
+  // the first one is selected by default
+  groupSelect.value = availableGroups[0].slug;
   groupSelect.disabled = false;
 }
 
