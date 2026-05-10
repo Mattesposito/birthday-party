@@ -1,0 +1,14 @@
+- registration
+- nella registration aggiungere un checkbox "Will you be there?" che finisce nel invited_list
+- aggiungere nei gruppi il numero di partecipanti e un contatore totale
+- pagina di accomodation (work in progress)
+- Music / schedule -> work in progress
+- no indirizzi
+- Venue -> How to get there / directions (work in progress)
+- titolo: Matteos birthday party -> An almost ..
+- niente orario (incerto)
+- bottone We want you! / registrazione più grande nella home 
+- invited list con checkbox su chi si è iscritto
+- trigger sql per aggiornare invited_list con la checkbox dei registrati e il numero di invitati
+- trigger sql su invited_list per aggiungere nuovi iscritti non invitati
+- trigger js per email di nuova registrazione a Matteo con i dati della registrazione

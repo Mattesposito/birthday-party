@@ -3,12 +3,12 @@ const eventDetails = {
   eventName: "Birthday Night",
   isoDate: "2026-07-30T19:30:00+02:00",
   displayDate: "Thursday, July 30, 2026",
-  displayTime: "7:30 PM until late",
+  displayTime: "",
   rsvpDeadline: "July 4, 2026",
   durationHours: 6,
   venueName: "Ficarazzi",
   cityLabel: "Ficarazzi",
-  address: "Via Example 24, Ficarazzi, Italy",
+  address: "",
   contactEmail: "and.adelfio@gmail.com"
 };
 
@@ -887,6 +887,7 @@ async function setupRegistrationForm() {
     const groupSlug = String(formData.get("group_slug") || "").trim();
     const guestsCount = Number(formData.get("guests") || 1);
     const notes = String(formData.get("notes") || "").trim();
+    const willBeThere = formData.get("will_be_there") === "on";
 
     if (!firstName || !surname || !email) {
       setFormStatus("Name, surname, and email are required.", "error");
@@ -909,7 +910,8 @@ async function setupRegistrationForm() {
       p_guests_count: guestsCount,
       p_notes: notes || null,
       p_group_slug: groupSlug,
-      p_new_group_name: null
+      p_new_group_name: null,
+      p_will_be_there: willBeThere
     });
 
     if (error) {

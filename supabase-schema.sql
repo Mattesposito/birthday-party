@@ -19,6 +19,7 @@ create table if not exists public.event_registrations (
   guests_count integer not null default 1 check (guests_count between 1 and 10),
   notes text,
   group_id uuid not null references public.guest_groups(id) on delete restrict,
+  will_be_there boolean not null default false,
   created_at timestamptz not null default timezone('utc', now()),
   updated_at timestamptz not null default timezone('utc', now())
 );
@@ -48,7 +49,9 @@ create index if not exists music_profiles_updated_at_idx
 alter table public.event_registrations
   add column if not exists name text,
   add column if not exists surname text,
-  add column if not exists full_name text;
+  add column if not exists full_name text,
+  add column if not exists email citext,
+  add column if not exists will_be_there boolean not null default false;
 
 update public.event_registrations
 set
@@ -101,6 +104,157 @@ alter table public.event_registrations
   alter column surname set not null,
   alter column full_name set not null;
 
+create table if not exists public.lista_invitati (
+  id bigint generated always as identity not null,
+  created_at timestamptz not null default now(),
+  name text,
+  surname text,
+  full_name text not null,
+  has_registered boolean not null default false,
+  number_of_guests integer default 0 check (number_of_guests >= 0),
+  is_invited boolean not null default true,
+  group_slug text not null references public.guest_groups(slug) on delete restrict,
+  will_be_there boolean not null default false,
+  registration_id uuid references public.event_registrations(id) on delete set null,
+  constraint lista_invitati_pkey primary key (id)
+);
+
+do $$
+begin
+  if not exists (
+    select 1
+    from information_schema.columns
+    where table_schema = 'public'
+      and table_name = 'lista_invitati'
+      and column_name = 'group_slug'
+  ) then
+    alter table public.lista_invitati add column group_slug text;
+  end if;
+
+  if not exists (
+    select 1
+    from information_schema.columns
+    where table_schema = 'public'
+      and table_name = 'lista_invitati'
+      and column_name = 'will_be_there'
+  ) then
+    alter table public.lista_invitati add column will_be_there boolean not null default false;
+  end if;
+
+  if not exists (
+    select 1
+    from information_schema.columns
+    where table_schema = 'public'
+      and table_name = 'lista_invitati'
+      and column_name = 'registration_id'
+  ) then
+    alter table public.lista_invitati add column registration_id uuid references public.event_registrations(id) on delete set null;
+  end if;
+
+  if not exists (
+    select 1
+    from information_schema.columns
+    where table_schema = 'public'
+      and table_name = 'lista_invitati'
+      and column_name = 'full_name'
+  ) then
+    alter table public.lista_invitati add column full_name text;
+  end if;
+
+  if exists (
+    select 1
+    from information_schema.columns
+    where table_schema = 'public'
+      and table_name = 'lista_invitati'
+      and column_name = 'group'
+  ) then
+    if exists (
+      select 1
+      from information_schema.columns
+      where table_schema = 'public'
+        and table_name = 'lista_invitati'
+        and column_name = 'group_slug'
+    ) then
+      update public.lista_invitati
+      set group_slug = "group"
+      where group_slug is null;
+    else
+      execute 'alter table public.lista_invitati rename column "group" to group_slug';
+    end if;
+  end if;
+
+  update public.lista_invitati
+  set full_name = trim(concat_ws(' ', name, surname))
+  where full_name is null;
+
+  update public.lista_invitati
+  set group_slug = 'default'
+  where group_slug is null;
+
+  alter table public.lista_invitati drop column if exists email;
+end;
+$$;
+
+create index if not exists lista_invitati_full_name_idx on public.lista_invitati(full_name);
+create index if not exists lista_invitati_group_slug_idx on public.lista_invitati(group_slug);
+create index if not exists lista_invitati_has_registered_idx on public.lista_invitati(has_registered);
+
+create or replace function update_lista_invitati_on_registration()
+returns trigger as $$
+declare
+  v_group_slug text;
+begin
+  update public.lista_invitati
+  set
+    has_registered = true,
+    number_of_guests = new.guests_count,
+    will_be_there = new.will_be_there,
+    registration_id = new.id,
+    name = coalesce(nullif(new.name, ''), name),
+    surname = coalesce(nullif(new.surname, ''), surname),
+    full_name = coalesce(nullif(new.full_name, ''), full_name)
+  where full_name = new.full_name;
+
+  if not found then
+    select slug
+    into v_group_slug
+    from public.guest_groups
+    where id = new.group_id
+    limit 1;
+
+    insert into public.lista_invitati (
+      name,
+      surname,
+      full_name,
+      has_registered,
+      number_of_guests,
+      is_invited,
+      group_slug,
+      will_be_there,
+      registration_id
+    )
+    values (
+      new.name,
+      new.surname,
+      new.full_name,
+      true,
+      new.guests_count,
+      false,
+      coalesce(v_group_slug, 'default'),
+      new.will_be_there,
+      new.id
+    );
+  end if;
+
+  return new;
+end;
+$$ language plpgsql;
+
+drop trigger if exists trigger_update_lista_invitati on public.event_registrations;
+create trigger trigger_update_lista_invitati
+  after insert or update on public.event_registrations
+  for each row execute function update_lista_invitati_on_registration();
+
 insert into public.guest_groups (name, slug, is_default, sort_order)
 values
   ('Default', 'default', true, 0),
@@ -124,7 +278,7 @@ for select
 to anon, authenticated
 using (true);
 
-drop function if exists public.register_guest(text, text, integer, text, text, text);
+drop function if exists public.register_guest(text, text, integer, text, text, text, boolean);
 create or replace function public.register_guest(
   p_name text,
   p_surname text,
@@ -132,7 +286,8 @@ create or replace function public.register_guest(
   p_guests_count integer default 1,
   p_notes text default null,
   p_group_slug text default 'default',
-  p_new_group_name text default null
+  p_new_group_name text default null,
+  p_will_be_there boolean default false
 )
 returns table (
   registration_id uuid,
@@ -228,7 +383,8 @@ begin
     email,
     guests_count,
     notes,
-    group_id
+    group_id,
+    will_be_there
   )
   values (
     trim(p_name),
@@ -237,7 +393,8 @@ begin
     v_email,
     p_guests_count,
     nullif(trim(coalesce(p_notes, '')), ''),
-    v_group_id
+    v_group_id,
+    p_will_be_there
   )
   on conflict (email) do update
   set
@@ -247,6 +404,7 @@ begin
     guests_count = excluded.guests_count,
     notes = excluded.notes,
     group_id = excluded.group_id,
+    will_be_there = excluded.will_be_there,
     updated_at = timezone('utc', now())
   returning id
   into v_registration_id;
@@ -446,7 +604,7 @@ $$;
 
 grant usage on schema public to anon, authenticated;
 grant select on public.guest_groups to anon, authenticated;
-grant execute on function public.register_guest(text, text, text, integer, text, text, text)
+grant execute on function public.register_guest(text, text, text, integer, text, text, text, boolean)
   to anon, authenticated;
 grant execute on function public.save_music_profile(
   text,

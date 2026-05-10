@@ -59,7 +59,8 @@ async function writeSmokeRegistration() {
     p_guests_count: 1,
     p_notes: "Smoke test insert from scripts/smoke-supabase-rsvp.mjs",
     p_group_slug: "default",
-    p_new_group_name: null
+    p_new_group_name: null,
+    p_will_be_there: true
   };
 
   const response = await fetch(`${config.url}/rest/v1/rpc/register_guest`, {
