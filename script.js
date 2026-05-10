@@ -941,6 +941,20 @@ async function setupRegistrationForm() {
         : `RSVP received${savedGroup}. Opening confirmation page...`,
       "success"
     );
+    emailjs.send("service_hs1asup", "template_qxkvjbe", {
+        name : firstName,
+        surname : surname,
+        username : username,
+        guests_count : String(guestsCount),
+        group : groupName,
+        will_be_there : Boolean(willBeThere) ? "Yes" : "No",
+        notes : notes
+    })
+    .then(function(response) {
+      console.log('Email inviata!', response.status, response.text);
+    }, function(error) {
+      console.log('Errore...', error);
+    });
     window.location.assign(thankYouUrl);
   });
 }
