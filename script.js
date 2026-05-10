@@ -2,14 +2,14 @@ const eventDetails = {
   hostName: "Matteo",
   eventName: "Birthday Night",
   isoDate: "2026-07-30T19:30:00+02:00",
-  displayDate: "Thursday, July 30, 2026",
-  displayTime: "",
+  displayDate: "Friday, July 31st, 2026",
+  displayTime: "Casa dello zio",
   rsvpDeadline: "July 4, 2026",
   durationHours: 6,
   venueName: "Ficarazzi",
   cityLabel: "Ficarazzi",
   address: "",
-  contactEmail: "and.adelfio@gmail.com"
+  contactEmail: ""
 };
 
 const supabaseConfig = window.SUPABASE_CONFIG ?? null;

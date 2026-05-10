@@ -1,9 +1,9 @@
-- registration
-- aggiungere nei gruppi il numero di partecipanti e un contatore totale
-- no indirizzi
+- registration - Matti
 - niente orario (incerto)
 - bottone We want you! / registrazione più grande nella home 
-- trigger js per email di nuova registrazione a Matteo con i dati della registrazione
+- trigger js per email di nuova registrazione a Matteo con i dati della registrazione - Andri
+- aggiungere nei gruppi il numero di partecipanti e un contatore totale
+- traduzione in italiano
 
 - titolo: Matteos birthday party -> An almost ..
 - invited list con checkbox su chi si è iscritto
@@ -13,3 +13,4 @@
 - Music / schedule -> work in progress
 - pagina di accomodation (work in progress)
 - Venue -> How to get there / directions (work in progress)
+- no indirizzi

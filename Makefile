@@ -1,5 +1,5 @@
 PORT ?= 8003
-HOST ?= 127.0.0.1
+HOST = 127.0.0.1
 SITE_DIR ?= .
 
 all: git

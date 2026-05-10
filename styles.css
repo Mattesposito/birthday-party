@@ -443,6 +443,92 @@ img {
   margin-top: 20px;
 }
 
+.brick-banner {
+  position: relative;
+  z-index: 2;
+  margin-top: -56px;
+}
+
+.brick-banner .container {
+  background: var(--white);
+  border: 1px solid #ededed;
+  box-shadow: 0 18px 34px rgba(0, 0, 0, 0.08);
+}
+
+.brick-banner-shell {
+  padding: 26px 20px 20px;
+}
+
+.brick-banner-header {
+  max-width: 720px;
+  margin: 0 auto 16px;
+  text-align: center;
+}
+
+.brick-banner-header .section-kicker {
+  margin: 0;
+  font-family: "Catamaran", sans-serif;
+  font-size: 0.98rem;
+  font-weight: 800;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.brick-banner-buttons {
+  display: flex;
+  flex-wrap: wrap-reverse;
+  justify-content: flex-start;
+  align-items: flex-start;
+  align-content: flex-start;
+  gap: 0;
+  margin: 0;
+  padding: 0;
+}
+
+.brick-banner-button {
+  margin: 0;
+  position: relative;
+  display: inline-flex;
+  justify-content: center;
+  text-align: center;
+  white-space: nowrap;
+  flex: 0 1 auto;
+  inline-size: auto;
+  min-inline-size: calc(var(--brick-stud-count) * var(--brick-stud-size) + 32px);
+}
+
+.brick-banner-button:nth-child(1) {
+  z-index: 1;
+}
+
+.brick-banner-button:nth-child(2) {
+  z-index: 2;
+}
+
+.brick-banner-button:nth-child(3) {
+  z-index: 3;
+}
+
+.brick-banner .button.brick-banner-button:nth-child(1) {
+  --brick-fill: var(--lego-blue);
+  --brick-text: var(--white);
+}
+
+.brick-banner .button.brick-banner-button:nth-child(2) {
+  --brick-fill: var(--lego-orange);
+  --brick-text: var(--white);
+}
+
+.brick-banner .button.brick-banner-button:nth-child(3) {
+  --brick-fill: var(--lego-green);
+  --brick-text: var(--white);
+}
+
+.brick-banner-button:hover,
+.brick-banner-button:focus-visible {
+  transform: translateY(-1px);
+}
+
 .banner-action {
   display: flex;
   align-items: center;
@@ -3042,6 +3128,17 @@ img {
 
   .banner-block:last-child {
     border-bottom: 0;
+  }
+
+  .brick-banner-buttons {
+    flex-direction: column-reverse;
+    align-items: flex-start;
+    margin: 0;
+  }
+
+  .brick-banner-button {
+    margin: 0;
+    inline-size: auto;
   }
 
   .music-board-toolbar {
