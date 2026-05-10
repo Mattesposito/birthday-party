@@ -774,7 +774,7 @@ async function setupMusicPage() {
     const formData = new FormData(musicForm);
     const firstName = String(formData.get("name") || "").trim();
     const surname = String(formData.get("surname") || "").trim();
-    const email = String(formData.get("email") || "").trim().toLowerCase();
+    const username = String(formData.get("username") || "").trim().toLowerCase();
     const instruments = collectMusicValues(
       formData,
       "instruments",
@@ -788,8 +788,8 @@ async function setupMusicPage() {
     const availabilityNotes = String(formData.get("availability_notes") || "").trim();
     const performanceNotes = String(formData.get("performance_notes") || "").trim();
 
-    if (!firstName || !surname || !email) {
-      setMusicStatus("Name, surname, and email are required.", "error");
+    if (!firstName || !surname || !username) {
+      setMusicStatus("Name, surname, and username are required.", "error");
       return;
     }
 
@@ -807,7 +807,7 @@ async function setupMusicPage() {
     const { data, error } = await client.rpc("save_music_profile", {
       p_name: firstName,
       p_surname: surname,
-      p_email: email,
+      p_username: username,
       p_instruments: instruments,
       p_styles: styles,
       p_genres: genres,
@@ -883,14 +883,14 @@ async function setupRegistrationForm() {
     const formData = new FormData(form);
     const firstName = String(formData.get("name") || "").trim();
     const surname = String(formData.get("surname") || "").trim();
-    const email = String(formData.get("email") || "").trim().toLowerCase();
+    const username = String(formData.get("username") || "").trim().toLowerCase();
     const groupSlug = String(formData.get("group_slug") || "").trim();
     const guestsCount = Number(formData.get("guests") || 1);
     const notes = String(formData.get("notes") || "").trim();
     const willBeThere = formData.get("will_be_there") === "on";
 
-    if (!firstName || !surname || !email) {
-      setFormStatus("Name, surname, and email are required.", "error");
+    if (!firstName || !surname || !username) {
+      setFormStatus("Name, surname, and username are required.", "error");
       return;
     }
 
@@ -906,7 +906,7 @@ async function setupRegistrationForm() {
     const { data, error } = await client.rpc("register_guest", {
       p_name: firstName,
       p_surname: surname,
-      p_email: email,
+      p_username: username,
       p_guests_count: guestsCount,
       p_notes: notes || null,
       p_group_slug: groupSlug,

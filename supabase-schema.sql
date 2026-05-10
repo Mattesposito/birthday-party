@@ -15,7 +15,7 @@ create table if not exists public.event_registrations (
   name text not null,
   surname text not null,
   full_name text not null,
-  email citext not null unique,
+  username text not null unique,
   guests_count integer not null default 1 check (guests_count between 1 and 10),
   notes text,
   group_id uuid not null references public.guest_groups(id) on delete restrict,
