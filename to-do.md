@@ -6,6 +6,9 @@
 - aggiungere nei gruppi il numero di partecipanti e un contatore totale
 - traduzione in italiano
 - check visualizzazione su smartphone
+- In registrazione: checkbox vorrei essere ospitato (se possibile), date per quando stare
+- Deadline: Now!
+- Pagina di accomodation. Info: best Ficarazzi, Bagheria e dintorni si puo' fare potenzialmente la spola; con la macchina va bene tutto. Se dite quando e per quanto (e quanti) vi aiutiamo a prenotare (anche fuori da Booking e AirBnB che finanziano Israele)
 
 - titolo: Matteos birthday party -> An almost ..
 - invited list con checkbox su chi si è iscritto

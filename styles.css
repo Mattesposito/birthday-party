@@ -939,9 +939,13 @@ img {
   content: "-";
 }
 
+.faq-card > div {
+  padding: 0 22px 22px;
+}
+
 .faq-card p {
   margin: 0;
-  padding: 0 22px 22px;
+  padding: 0 0 22px;
   color: var(--muted);
 }
 
