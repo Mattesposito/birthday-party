@@ -8,7 +8,7 @@ const eventDetails = {
   durationHours: 6,
   venueName: "Ficarazzi",
   cityLabel: "Ficarazzi",
-  address: "",
+  address: "Ficarazzi",
   contactEmail: ""
 };
 
