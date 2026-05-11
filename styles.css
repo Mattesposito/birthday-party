@@ -1316,11 +1316,10 @@ img {
 .lego-theme .site-nav a {
   --nav-brick-fill: var(--lego-blue);
   --nav-text: var(--white);
-  --nav-stud-count: 3;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  inline-size: calc(var(--nav-stud-count) * var(--nav-stud-size) + 22px);
+  inline-size: auto;
   min-height: 58px;
   padding: 14px 12px;
   border: 1.5px solid rgba(17, 17, 17, 0.18);
@@ -1349,7 +1348,7 @@ img {
 .lego-theme .site-nav a:nth-child(6n + 3) {
   --nav-brick-fill: var(--lego-yellow);
   --nav-text: #111111;
-  --nav-stud-count: 3;
+  --nav-stud-count: 5;
 }
 
 .lego-theme .site-nav a:nth-child(6n + 4) {
