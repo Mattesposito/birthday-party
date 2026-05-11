@@ -8,7 +8,8 @@
   --muted: #626262;
   --border: #dfdfdf;
   --shadow: 5px 5px 30px rgba(0, 0, 0, 0.05);
-  --container: min(1140px, calc(100vw - 32px));
+  --container: 1140px;
+  --container-gutter: clamp(12px, 2.8vw, 16px);
   --hero-bg-image: none;
   --hero-bg-position: center center;
   --countdown-bg-image: none;
@@ -35,6 +36,11 @@ body {
   font-size: 16px;
   line-height: 1.7;
   background: var(--white);
+}
+
+body.subpage {
+  display: flex;
+  flex-direction: column;
 }
 
 body.nav-open {
@@ -74,8 +80,9 @@ img {
 }
 
 .container {
-  width: var(--container);
+  width: min(100%, var(--container));
   margin: 0 auto;
+  padding-inline: var(--container-gutter);
 }
 
 .site-header {
@@ -746,7 +753,7 @@ img {
 .rsvp-layout {
   display: grid;
   grid-template-columns: minmax(0, 1.2fr) minmax(320px, 0.8fr);
-  gap: 36px;
+  gap: clamp(24px, 3vw, 36px);
   align-items: start;
 }
 
@@ -1016,8 +1023,15 @@ img {
   color: rgba(255, 255, 255, 0.72);
 }
 
-.subpage-main {
-  min-height: 100vh;
+body.subpage .subpage-main {
+  flex: 1 0 auto;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+body.subpage .subpage-main > section:only-child {
+  flex: 1 0 auto;
 }
 
 .subpage-hero {
@@ -1075,11 +1089,30 @@ img {
 }
 
 .rsvp-page-section {
-  padding-top: 160px;
+  display: flex;
+  align-items: center;
+  padding-top: clamp(48px, 4vh, 88px);
+  padding-bottom: clamp(8px, 2vh, 24px);
 }
 
 .rsvp-page-section .hero-actions {
   justify-content: flex-start;
+}
+
+@media (min-width: 1500px) {
+  .rsvp-page-section {
+    padding-top: 36px;
+    padding-bottom: 8px;
+  }
+
+  .rsvp-form {
+    padding: 18px 22px;
+  }
+
+  .rsvp-summary,
+  .rsvp-info-grid {
+    margin-top: 20px;
+  }
 }
 
 .thank-you-panel {
@@ -1148,7 +1181,7 @@ img {
 }
 
 .rsvp-form {
-  padding: 30px;
+  padding: clamp(20px, 3.5vw, 30px);
   color: var(--text);
 }
 
@@ -1173,9 +1206,21 @@ img {
   text-transform: uppercase;
 }
 
+.rsvp-form label small {
+  display: block;
+  margin-top: 4px;
+  color: var(--muted);
+  font-size: 0.84rem;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  line-height: 1.35;
+  text-transform: none;
+}
+
 .rsvp-form .checkbox-label {
   display: flex;
-  align-items: center;
+  flex-wrap: wrap;
+  align-items: flex-start;
   gap: 10px;
   text-transform: none;
   font-weight: 600;
@@ -1184,6 +1229,14 @@ img {
 .rsvp-form .checkbox-label input[type="checkbox"] {
   width: auto;
   margin: 0;
+}
+
+.rsvp-form .checkbox-label small {
+  flex: 0 0 calc(100% - 30px);
+  margin: 0 0 0 30px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  letter-spacing: 0.01em;
 }
 
 .rsvp-form input,
@@ -3213,16 +3266,17 @@ img {
     grid-template-columns: 1fr;
   }
 
+  .rsvp-page-section {
+    padding-top: clamp(88px, 14vw, 120px);
+    padding-bottom: 28px;
+  }
+
   .footer-inner {
     flex-direction: column;
   }
 }
 
 @media (max-width: 540px) {
-  .container {
-    width: min(100vw - 24px, var(--container));
-  }
-
   .hero-copy h1 {
     font-size: clamp(3rem, 17vw, 4.8rem);
   }
@@ -3248,7 +3302,7 @@ img {
   }
 
   .rsvp-form {
-    padding: 24px;
+    padding: clamp(18px, 5vw, 24px);
   }
 
   .music-grid {
