@@ -917,6 +917,9 @@ async function setupRegistrationForm() {
     const guestsCount = Number(formData.get("guests") || 1);
     const notes = String(formData.get("notes") || "").trim();
     const willBeThere = formData.get("will_be_there") === "on";
+    const stayDates = parseTagInput(formData.get("stay_dates") || "");
+    const hostDates = parseTagInput(formData.get("host_dates") || "");
+    const hostedByFriend = formData.get("hosted_by_friend") === "on";
 
     if (!firstName || !surname || !username) {
       setFormStatus("Name, surname, and username are required.", "error");
@@ -938,6 +941,9 @@ async function setupRegistrationForm() {
       p_username: username,
       p_guests_count: guestsCount,
       p_notes: notes || null,
+      p_stay_dates: stayDates || null,
+      p_host_dates: hostDates || null,
+      p_hosted_by_friend: hostedByFriend,
       p_group_slug: groupSlug,
       p_new_group_name: null,
       p_will_be_there: willBeThere
@@ -978,7 +984,10 @@ async function setupRegistrationForm() {
         guests_count : String(guestsCount),
         group : groupName,
         will_be_there : Boolean(willBeThere) ? "Yes" : "No",
-        notes : notes
+        notes : notes,
+        stay_dates : stayDates,
+        host_dates : hostDates,
+        hosted_by_friend : hostedByFriend ? "Yes" : "No"
     })
     .then(function(response) {
       console.log('Email inviata!', response.status, response.text);

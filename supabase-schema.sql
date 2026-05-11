@@ -22,7 +22,10 @@ create table if not exists public.event_registrations (
   group_id uuid not null references public.guest_groups(id) on delete restrict,
   will_be_there boolean not null default false,
   created_at timestamptz not null default timezone('utc', now()),
-  updated_at timestamptz not null default timezone('utc', now())
+  updated_at timestamptz not null default timezone('utc', now()),
+  stay_dates text,
+  host_dates text,
+  hosted_by_friend boolean default false
 );
 
 create table if not exists public.music_profiles (
@@ -171,7 +174,10 @@ create or replace function public.register_guest(
   p_notes text default null,
   p_group_slug text default 'default',
   p_new_group_name text default null,
-  p_will_be_there boolean default false
+  p_will_be_there boolean default false,
+  p_stay_dates text default null,
+  p_host_dates text default null,
+  p_hosted_by_friend boolean default false
 )
 returns table (
   registration_id uuid,
@@ -267,7 +273,10 @@ begin
     guests_count,
     notes,
     group_id,
-    will_be_there
+    will_be_there,
+    stay_dates,
+    host_dates,
+    hosted_by_friend
   )
   values (
     trim(p_name),
@@ -277,7 +286,10 @@ begin
     p_guests_count,
     nullif(trim(coalesce(p_notes, '')), ''),
     v_group_id,
-    p_will_be_there
+    p_will_be_there,
+    nullif(trim(coalesce(p_stay_dates, '')), ''),
+    nullif(trim(coalesce(p_host_dates, '')), ''),
+    p_hosted_by_friend
   )
   on conflict (username) do update
   set
@@ -288,6 +300,9 @@ begin
     notes = excluded.notes,
     group_id = excluded.group_id,
     will_be_there = excluded.will_be_there,
+    stay_dates = excluded.stay_dates,
+    host_dates = excluded.host_dates,
+    hosted_by_friend = excluded.hosted_by_friend,
     updated_at = timezone('utc', now())
   returning id
   into v_registration_id;

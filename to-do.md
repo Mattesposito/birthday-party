@@ -8,6 +8,10 @@
 - check visualizzazione su smartphone
 - In registrazione: checkbox vorrei essere ospitato (se possibile), date per quando stare
 
+- stay_dates
+host_dates
+hosted_by_friend
+
 - titolo: Matteos birthday party -> An almost ..
 - invited list con checkbox su chi si è iscritto
 - trigger sql per aggiornare invited_list con la checkbox dei registrati e il numero di invitati
