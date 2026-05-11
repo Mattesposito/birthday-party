@@ -31,7 +31,7 @@
       <section class="rsvp-section rsvp-page-section">
         <div class="container rsvp-layout">
           <div class="rsvp-copy reveal">
-            <h2>Please reply by <span data-rsvp-deadline>TODAY!</span>.</h2>
+            <h2>Please reply by TODAY!</h2>
             <!-- <p class="rsvp-contact">
               Contact:
               <a href="#" data-contact-link data-contact-email></a>
@@ -103,6 +103,25 @@
             </label>
 
             <label>
+              If you are coming from abroad, write the dates of your stay so that we can help coordinate!
+              <textarea
+                name="stay_dates"
+                rows="4"
+                placeholder="E.g. from July 30th to August 2nd"
+              ></textarea>
+            </label>
+
+            <label>
+              If you are a local friend, write the dates when you can host guests so that we can coordinate!
+               <small>(Hosting is not mandatory, but it would be very helpful to accommodate as many people as possible!)</small>
+              <textarea
+                name="host_dates"
+                rows="4"
+                placeholder="E.g. one person from July 30th to July 31st"
+              ></textarea>
+            </label>
+
+            <label>
               Message or dietary notes
               <textarea
                 name="notes"
@@ -116,6 +135,11 @@
               Will you be there? <small>(Uncheck if you can't make it, we will miss you!)</small>
             </label>
 
+            <label class="checkbox-label">
+              <input type="checkbox" name="hosted_by_friend" />
+              If there are available spots, I would like to be hosted by a local friend. <small>(We will try to accommodate as many people as possible, but we can't promise anything!)</small>
+            </label>
+
             <p class="form-hint">
               If you need to update your info, send the form again with the same username.
             </p>
@@ -124,9 +148,9 @@
               <button class="button button-success brick-6" type="submit">
                 Send RSVP
               </button>
-              <button class="button button-outline brick-5" type="button" data-download-ics>
+              <!-- <button class="button button-outline brick-5" type="button" data-download-ics>
                 Add to calendar
-              </button>
+              </button> -->
             </div>
 
             <p class="form-status" id="form-status" aria-live="polite"></p>
