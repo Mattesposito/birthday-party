@@ -7,6 +7,7 @@ create table if not exists public.guest_groups (
   slug text not null unique,
   is_default boolean not null default false,
   sort_order integer not null default 100,
+  members_count integer not null default 0,
   created_at timestamptz not null default timezone('utc', now())
 );
 
@@ -120,6 +121,46 @@ drop trigger if exists trigger_update_lista_invitati on public.event_registratio
 create trigger trigger_update_lista_invitati
   after insert or update on public.event_registrations
   for each row execute function update_lista_invitati_on_registration();
+
+create or replace function public.sync_guest_group_members_count()
+returns trigger
+language plpgsql
+as $$
+begin
+  if tg_op in ('UPDATE', 'DELETE') then
+    update public.guest_groups gg
+    set members_count = (
+      select count(*)
+      from public.event_registrations er
+      where er.group_id = old.group_id
+      and er.will_be_there = true
+    )
+    where gg.id = old.group_id;
+  end if;
+
+  if tg_op in ('INSERT', 'UPDATE') then
+    update public.guest_groups gg
+    set members_count = (
+      select count(*)
+      from public.event_registrations er
+      where er.group_id = new.group_id
+      and er.will_be_there = true
+    )
+    where gg.id = new.group_id;
+  end if;
+
+  return null;
+end;
+$$;
+
+drop trigger if exists trigger_sync_guest_group_members_count
+on public.event_registrations;
+
+create trigger trigger_sync_guest_group_members_count
+after insert or update or delete
+on public.event_registrations
+for each row
+execute function public.sync_guest_group_members_count();
 
 drop function if exists public.register_guest(text,text,text,integer,text,text,text,boolean);
 create or replace function public.register_guest(

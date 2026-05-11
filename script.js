@@ -423,7 +423,7 @@ function normalizeGroups(groups) {
     .map((group) => ({
       slug: String(group.slug).trim(),
       name: String(group.name).trim(),
-      membersCount: Number(group.event_registrations?.length ?? 0)
+      membersCount: Number(group.members_count)
     }))
     .filter((group) => group.slug && group.name);
 }
@@ -479,7 +479,7 @@ function renderGroupList(groups) {
 
       return `
         <div class="group-summary">
-          <strong>${escapeHTML(group.name)}</strong> (${escapeHTML(label)})
+          <strong>- ${escapeHTML(group.name)}</strong> (${escapeHTML(label)})
         </div>
       `;
     })
@@ -495,7 +495,7 @@ async function fetchGuestGroups(client) {
 
   const { data, error } = await client
     .from("guest_groups")
-    .select("name, slug, sort_order, event_registrations(id)")
+    .select("name, slug, sort_order, members_count")
     .order("sort_order", { ascending: true })
     .order("name", { ascending: true });
 
