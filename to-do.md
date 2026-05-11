@@ -1,12 +1,10 @@
-- registration - Matti
 - inserire tutti gli invitati
 - inserire i gruppi
 - aggiungere mail della madre di matte
 - aggiungere membersCount ai gruppi
-- aggiungere nei gruppi il numero di partecipanti e un contatore totale
+- aggistare contatore partecipanti per number of guests
 - traduzione in italiano
 - check visualizzazione su smartphone
-- In registrazione: checkbox vorrei essere ospitato (se possibile), date per quando stare
 
 - titolo: Matteos birthday party -> An almost ..
 - invited list con checkbox su chi si è iscritto
@@ -22,3 +20,5 @@
 - trigger js per email di nuova registrazione a Matteo con i dati della registrazione - Andri
 - Pagina di accomodation. Info: best Ficarazzi, Bagheria e dintorni si puo' fare potenzialmente la spola; con la macchina va bene tutto. Se dite quando e per quanto (e quanti) vi aiutiamo a prenotare (anche fuori da Booking e AirBnB che finanziano Israele)
 - Deadline: Now!
+- registration - Matti
+- In registrazione: checkbox vorrei essere ospitato (se possibile), date per quando stare
