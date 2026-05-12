@@ -133,7 +133,7 @@ begin
   if tg_op in ('UPDATE', 'DELETE') then
     update public.guest_groups gg
     set members_count = (
-      select count(*)
+      select coalesce(sum(er.guests_count), 0)
       from public.event_registrations er
       where er.group_id = old.group_id
       and er.will_be_there = true
@@ -144,7 +144,7 @@ begin
   if tg_op in ('INSERT', 'UPDATE') then
     update public.guest_groups gg
     set members_count = (
-      select count(*)
+      select coalesce(sum(er.guests_count), 0)
       from public.event_registrations er
       where er.group_id = new.group_id
       and er.will_be_there = true
