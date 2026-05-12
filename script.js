@@ -418,8 +418,12 @@ function setFormBusy(isBusy) {
 }
 
 function normalizeGroups(groups) {
+  if (!Array.isArray(groups)) {
+    return [];
+  }
+
   return (Array.isArray(groups) ? groups : [])
-    .filter((group) => group?.slug && group?.name)
+    .filter((group) => group?.slug && group?.name && group?.members_count > 0)
     .map((group) => ({
       slug: String(group.slug).trim(),
       name: String(group.name).trim(),
@@ -472,10 +476,16 @@ function renderGroupList(groups) {
     return;
   }
 
+  availableGroups.push({
+    slug: "total",
+    name: "In Total",
+    membersCount: availableGroups.reduce((sum, group) => sum + group.membersCount, 0)
+  });
+
   groupList.innerHTML = availableGroups
     .map((group) => {
       const count = Number.isFinite(group.membersCount) ? group.membersCount : 0;
-      const label = `${count} have registered`;
+      const label = `${count} will be there`;
 
       return `
         <div class="group-summary">
