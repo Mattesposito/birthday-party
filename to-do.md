@@ -1,10 +1,6 @@
 - inserire tutti gli invitati
-- inserire i gruppi
-- aggiungere mail della madre di matte
-- aggiungere membersCount ai gruppi
-- aggistare contatore partecipanti per number of guests
 - traduzione in italiano
-- check visualizzazione su smartphone
+
 
 - stay_dates
 host_dates
@@ -26,3 +22,7 @@ hosted_by_friend
 - Deadline: Now!
 - registration - Matti
 - In registrazione: checkbox vorrei essere ospitato (se possibile), date per quando stare
+- check visualizzazione su smartphone
+- aggiungere mail della madre di matte
+- aggiungere membersCount ai gruppi
+- aggistare contatore partecipanti per number of guests

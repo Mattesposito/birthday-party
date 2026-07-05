@@ -2151,8 +2151,13 @@ body.subpage .subpage-main > section:only-child {
 .music-stage-note {
   max-width: 480px;
   margin: 18px 0 0;
-  color: rgba(255, 255, 255, 0.68);
+  padding: 22px;
+  background: var(--lego-blue);
+  color: var(--white);
   font-size: 0.98rem;
+  border: 1.5px solid rgba(17, 17, 17, 0.14);
+  box-shadow: 0 18px 30px rgba(0, 0, 0, 0.12);
+  border-radius: 0;
 }
 
 .music-stage-copy .hero-meta,

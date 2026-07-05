@@ -98,7 +98,6 @@ def create_test_music_profile():
         "p_surname": "Musician",
         "p_username": username,
         "p_instruments": ["guitar"],
-        "p_styles": ["rock"],
         "p_genres": ["indie"],
         "p_collaboration_modes": ["jam"],
         "p_availability_notes": "Test music profile.",

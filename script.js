@@ -625,10 +625,6 @@ function renderMusicProfiles(profiles) {
             <div class="music-chip-list">${renderChips(profile.instruments, "Open")}</div>
           </div>
           <div class="music-card-block">
-            <span class="music-card-label">Styles</span>
-            <div class="music-chip-list">${renderChips(profile.styles, "Flexible")}</div>
-          </div>
-          <div class="music-card-block">
             <span class="music-card-label">Genres</span>
             <div class="music-chip-list">${renderChips(profile.genres, "Mixed")}</div>
           </div>
@@ -792,7 +788,7 @@ async function setupMusicPage() {
 
   if (musicStatus.dataset.tone !== "error") {
     setMusicStatus(
-      "Choose at least one instrument, one style, and one genre to join the board.",
+      "Choose at least one instrument and one genre to join the board.",
       "muted"
     );
   }
@@ -809,7 +805,6 @@ async function setupMusicPage() {
       "instruments",
       "other_instruments"
     );
-    const styles = collectMusicValues(formData, "styles", "other_styles");
     const genres = collectMusicValues(formData, "genres", "other_genres");
     const collaborationModes = uniqueValues(
       formData.getAll("collaboration_modes").map((value) => String(value || ""))
@@ -822,9 +817,9 @@ async function setupMusicPage() {
       return;
     }
 
-    if (!instruments.length || !styles.length || !genres.length) {
+    if (!instruments.length || !genres.length) {
       setMusicStatus(
-        "Select at least one instrument, one style, and one genre.",
+        "Select at least one instrument and one genre.",
         "error"
       );
       return;
@@ -838,7 +833,6 @@ async function setupMusicPage() {
       p_surname: surname,
       p_username: username,
       p_instruments: instruments,
-      p_styles: styles,
       p_genres: genres,
       p_collaboration_modes: collaborationModes,
       p_availability_notes: availabilityNotes || null,
