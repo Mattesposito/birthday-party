@@ -52,6 +52,11 @@ let navToggle = null;
 let navLinks = [];
 let siteHeader = null;
 
+const guestFactsForm = document.getElementById("guest-facts-form");
+const guestFactsStatus = document.getElementById("guest-facts-status");
+const guestFactsSubmitButton =
+  guestFactsForm?.querySelector('button[type="submit"]') || null;
+
 function setText(selector, value) {
   document.querySelectorAll(selector).forEach((node) => {
     node.textContent = value;
@@ -553,6 +558,26 @@ function setMusicBusy(isBusy) {
     : "Save music details";
 }
 
+function setGuestFactsStatus(message, tone = "muted") {
+  if (!guestFactsStatus) {
+    return;
+  }
+
+  guestFactsStatus.textContent = message;
+  guestFactsStatus.dataset.tone = tone;
+}
+
+function setGuestFactsBusy(isBusy) {
+  if (!guestFactsSubmitButton) {
+    return;
+  }
+
+  guestFactsSubmitButton.disabled = isBusy;
+  guestFactsSubmitButton.textContent = isBusy
+    ? "Submitting..."
+    : "Submit facts";
+}
+
 function parseTagInput(text) {
   return String(text || "")
     .split(/[,;\n]/)
@@ -863,6 +888,73 @@ async function setupMusicPage() {
   });
 }
 
+async function setupGuestFactsPage() {
+  if (!guestFactsForm || !guestFactsStatus) {
+    return;
+  }
+
+  const client = createSupabaseClient();
+
+  if (!client) {
+    setGuestFactsStatus(
+      "Add your Supabase publishable key in supabase-config.js to submit guest facts.",
+      "warning"
+    );
+
+    if (guestFactsSubmitButton) {
+      guestFactsSubmitButton.disabled = true;
+    }
+
+    return;
+  }
+
+  setGuestFactsStatus(
+    "Share one guest fact plus up to two extras.",
+    "muted"
+  );
+
+  guestFactsForm.addEventListener("submit", async (event) => {
+    event.preventDefault();
+
+    const formData = new FormData(guestFactsForm);
+    const fullName = String(formData.get("full_name") || "").trim();
+    const fact1 = String(formData.get("fact_1") || "").trim();
+    const fact2 = String(formData.get("fact_2") || "").trim();
+    const fact3 = String(formData.get("fact_3") || "").trim();
+    const facts = [fact1, fact2, fact3].filter(Boolean).slice(0, 3);
+
+    if (!fullName) {
+      setGuestFactsStatus("Full name is required.", "error");
+      return;
+    }
+
+    if (!fact1) {
+      setGuestFactsStatus("Please add at least one fact.", "error");
+      return;
+    }
+
+    setGuestFactsBusy(true);
+    setGuestFactsStatus("Saving guest facts...", "muted");
+
+    const { data, error } = await client.rpc("save_guest_fact", {
+      p_full_name: fullName,
+      p_fact_1: fact1,
+      p_fact_2: fact2 || null,
+      p_fact_3: fact3 || null
+    });
+
+    if (error) {
+      setGuestFactsBusy(false);
+      setGuestFactsStatus(resolveSupabaseError(error), "error");
+      return;
+    }
+
+    guestFactsForm.reset();
+    setGuestFactsBusy(false);
+    setGuestFactsStatus("Guest facts submitted.", "success");
+  });
+}
+
 async function setupRegistrationForm() {
   if (!form) {
     return;
@@ -1025,6 +1117,12 @@ async function initPage() {
     await setupMusicPage();
   } catch (error) {
     setMusicStatus(resolveSupabaseError(error), "error");
+  }
+
+  try {
+    await setupGuestFactsPage();
+  } catch (error) {
+    setGuestFactsStatus(resolveSupabaseError(error), "error");
   }
 }
 

@@ -73,6 +73,75 @@ create index if not exists event_registrations_group_id_idx
 create index if not exists music_profiles_updated_at_idx
   on public.music_profiles(updated_at desc);
 
+create table if not exists public.guest_facts (
+  id uuid primary key default gen_random_uuid(),
+  full_name text not null,
+  facts text[] not null default '{}',
+  created_at timestamptz not null default timezone('utc', now()),
+  updated_at timestamptz not null default timezone('utc', now()),
+  constraint guest_facts_facts_not_empty check (cardinality(facts) > 0 and cardinality(facts) <= 3)
+);
+
+alter table public.guest_facts
+  drop column if exists username;
+
+create or replace function public.save_guest_fact(
+  p_full_name text,
+  p_fact_1 text,
+  p_fact_2 text default null,
+  p_fact_3 text default null
+)
+returns table (
+  guest_fact_id uuid,
+  saved_mode text
+)
+language plpgsql
+security definer
+set search_path = public
+as $$
+declare
+  v_facts text[];
+  v_fact_id uuid;
+begin
+  if nullif(trim(coalesce(p_full_name, '')), '') is null then
+    raise exception 'Full name is required';
+  end if;
+
+  v_facts := array_remove(array[
+    nullif(trim(coalesce(p_fact_1, '')), ''),
+    nullif(trim(coalesce(p_fact_2, '')), ''),
+    nullif(trim(coalesce(p_fact_3, '')), '')
+  ], null);
+
+  if cardinality(v_facts) = 0 then
+    raise exception 'At least one fact is required';
+  end if;
+
+  if cardinality(v_facts) > 3 then
+    v_facts := v_facts[1:3];
+  end if;
+
+  insert into public.guest_facts (
+    full_name,
+    facts
+  )
+  values (
+    trim(p_full_name),
+    v_facts
+  )
+  returning id
+  into v_fact_id;
+
+  return query
+  select
+    v_fact_id,
+    'created';
+end;
+$$;
+
+create index if not exists guest_facts_updated_at_idx
+  on public.guest_facts(updated_at desc);
+
 create index if not exists lista_invitati_group_slug_idx on public.lista_invitati using btree (group_slug);
 create index if not exists lista_invitati_has_registered_idx on public.lista_invitati using btree (has_registered);
 create index if not exists lista_invitati_full_name_idx on public.lista_invitati using btree (full_name);
@@ -472,6 +541,13 @@ grant execute on function public.save_music_profile(
 )
   to anon, authenticated;
 grant execute on function public.list_music_profiles()
+  to anon, authenticated;
+grant execute on function public.save_guest_fact(
+  text,
+  text,
+  text,
+  text
+)
   to anon, authenticated;
 
 alter policy "groups_visual"

@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Guest Facts | Matteo's Birthday</title>
+    <script>
+      document.documentElement.classList.add("has-js");
+    </script>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&amp;family=Roboto:wght@300;400;500;700&amp;family=Catamaran:wght@400;700;800;900&amp;display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body class="subpage guest-facts-page lego-theme" data-nav-current="guest-facts">
+    <div data-site-header></div>
+
+    <main class="subpage-main">
+      <section class="rsvp-section rsvp-page-section">
+        <div class="container rsvp-layout">
+          <div class="rsvp-copy reveal">
+            <h2>Join the Guest Facts Game!</h2>
+            <p>
+              At the party everyone will be given a few facts about the other guests and their relationships with
+              me (Matteo). The goal is to ask around and find out who the facts are about. 
+              For this, I will need your help! Please submit a few facts about your friendship with me 
+              (for example an annecdote, a funny story, a memorable moment, etc.) and I will include them in the game.
+            </p>
+          </div>
+
+          <form class="rsvp-form reveal" id="guest-facts-form">
+            <label>
+              Full name
+              <input type="text" name="full_name" placeholder="Alex Morgan" required />
+            </label>
+
+            <label>
+              Fact 1 <small>(required)</small>
+              <input
+                type="text"
+                name="fact_1"
+                placeholder="Matteo and I met while skydiving together"
+                required
+              />
+            </label>
+
+            <label>
+              Fact 2 <small>(optional)</small>
+              <input
+                type="text"
+                name="fact_2"
+                placeholder="I introduced Matteo to his favorite band"
+              />
+            </label>
+
+            <label>
+              Fact 3 <small>(optional)</small>
+              <input
+                type="text"
+                name="fact_3"
+                placeholder="I saved Matteo's life during a shark attack"
+              />
+            </label>
+
+            <div class="form-actions">
+              <button class="button button-primary brick-6" type="submit">
+                Submit facts
+              </button>
+            </div>
+
+            <p class="form-status" id="guest-facts-status" aria-live="polite"></p>
+          </form>
+        </div>
+      </section>
+    </main>
+
+    <div data-site-footer></div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="supabase-config.js"></script>
+    <script src="script.js"></script>
+  </body>
+</html>
